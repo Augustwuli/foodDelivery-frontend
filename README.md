@@ -16,3 +16,12 @@
 - 安装 sass 依赖
 - 配置代理
 
+## 2019-01-15
+
+### 2.修改目录结构
+博客链接：https://blog.csdn.net/August_leo/article/details/86494909
+
+内容包含：
+
+- 删除不必要的文件
+- src 下创建需要的文件夹
