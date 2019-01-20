@@ -1,0 +1,13 @@
+span.ant-input-group.store{
+  margin-left: 50px; 
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  .store-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px 0;
+  }
+}
