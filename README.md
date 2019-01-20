@@ -18,7 +18,8 @@
 
 ## 2019-01-15
 
-### 2.修改目录结构
+### 1.修改目录结构
+
 博客链接：https://blog.csdn.net/August_leo/article/details/86494909
 
 内容包含：
@@ -28,3 +29,15 @@
 - 修改 index.js文件
 - 创建 style.scss 和 App.js 文件
 - 启动项目
+
+## 2019-01-20
+
+### 1.在 React 中使用 antd
+
+博客链接：https://blog.csdn.net/August_leo/article/details/86560598
+
+内部包含：
+
+- 安装 antd
+- 引入文件
+- 使用 antd
