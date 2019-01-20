@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import BasicLayout from '@/page/site/index';
+import BasicLayout from '@/page/site/store';
 import { Button ,Table ,Divider } from 'antd'
 
 export default class Order extends Component {

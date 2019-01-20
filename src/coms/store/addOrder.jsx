@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import BasicLayout from '@/page/site/store';
-import { Input, Button } from 'antd'
+import { Button, Input } from 'antd'
+import { Link } from 'react-router-dom'
 
-export default class Store extends Component {
+export default class AddOrder extends Component {
   componentDidMount () {
     this.initMap()
   }
@@ -51,27 +52,26 @@ export default class Store extends Component {
         local.search(myValue);
       });
   }
-
   render () {
     return (
       <BasicLayout>
         <Input.Group className="store">
             <div className="store-info">
-              <label>店铺名称</label>
-              <Input placeholder="请输入商家名称" style={{width: '240px'}}/>
+              <label>买家昵称</label>
+              <Input placeholder="请输入买家昵称" style={{width: '240px'}}/>
             </div>
             <div className="store-info">
-              <label>联系电话</label>
-              <Input placeholder="请输入联系电话" style={{width: '240px'}}/>
+              <label>买家联系电话</label>
+              <Input placeholder="请输入买家联系电话" style={{width: '240px'}}/>
             </div>
             <div className="store-info">
-              <label>商家地址</label>
-              <Input id="address" placeholder="请输入商家地址" style={{width: '240px'}}/>
+              <label>买家收货地址</label>
+              <Input id="address" placeholder="请输入买家收货地址" style={{width: '240px'}}/>
             </div>
             <div id="container" style={{width: '400px', height: '300px'}}></div> 
             <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>
           </Input.Group>
-          <Button style={{margin: '20px 0 20px 40px', width: '120px'}}>保存</Button>
+          <Button style={{margin: '20px 0 20px 40px', width: '120px'}}>添加</Button>
       </BasicLayout>
     )
   }

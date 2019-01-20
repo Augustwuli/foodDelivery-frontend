@@ -20,19 +20,19 @@ export default class Index extends Component {
         <Sider style={{overflow: 'auto', height: '100vh', position: 'fixed', left: 0,}}>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
             <Menu.Item key="1">
-              <Link to="/">
+              <Link to="/store/home">
                 <Icon type="home" />
                 <span className="nav-text">首页</span>
               </Link> 
             </Menu.Item>
             <Menu.Item key="2">
-              <Link to="/store">
+              <Link to="/store/store">
                 <Icon type="user" />
                 <span className="nav-text">商家信息</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Link to="/order">
+              <Link to="/store/order">
                 <Icon type="profile" />
                 <span className="nav-text">订单信息</span>
               </Link>
