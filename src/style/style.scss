@@ -1,5 +1,5 @@
 span.ant-input-group.store{
-  margin-left: 50px; 
+  margin: 0 auto;
   width: 340px;
   display: flex;
   flex-direction: column;
@@ -9,5 +9,11 @@ span.ant-input-group.store{
     justify-content: space-around;
     align-items: center;
     margin: 10px 0;
+  }
+}
+.order-btn{
+  margin: 10px 0;
+  button{
+    margin: 0 5px;
   }
 }
