@@ -1,10 +1,41 @@
 import React, { Component } from 'react'
 import BasicLayout from '@/page/site/store';
 import { Input, Button } from 'antd'
+import Api from '@/tool/api.js'
 
 export default class Store extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      name: '',
+      phone: '',
+      address: '',
+      longitude: '',
+      latitude:'',
+      statu: 0
+    }
+  }
+
   componentDidMount () {
     this.initMap()
+    console.log('商家信息' + localStorage.getItem('storeId'))
+    this.getData()
+  }
+
+  getData () {
+    let storeId = localStorage.getItem('storeId')
+    Api.get(`stores/info/${storeId}`, null, r => {
+      this.setState({
+        name: r.data.name,
+        phone: r.data.phone,
+        longitude: r.data.longitude,
+        latitude: r.data.latitude,
+        statu: r.statu
+      },function(){
+        localStorage.setItem('storeId',r.data.userId)
+        console.log('getdata'+this.state.name,this.state.phone,this.state.longitude,this.latitude)
+      })
+    })
   }
 
   initMap () {
@@ -58,15 +89,15 @@ export default class Store extends Component {
         <Input.Group className="store">
             <div className="store-info">
               <label>店铺名称</label>
-              <Input placeholder="请输入商家名称" style={{width: '240px'}}/>
+              <Input placeholder="请输入商家名称" style={{width: '240px'}} value={this.state.name}/>
             </div>
             <div className="store-info">
               <label>联系电话</label>
-              <Input placeholder="请输入联系电话" style={{width: '240px'}}/>
+              <Input placeholder="请输入联系电话" style={{width: '240px'}} value={this.state.phone}/>
             </div>
             <div className="store-info">
               <label>商家地址</label>
-              <Input id="address" placeholder="请输入商家地址" style={{width: '240px'}}/>
+              <Input id="address" placeholder="请输入商家地址" style={{width: '240px'}} value={this.state.address}/>
             </div>
             <div id="container" style={{width: '400px', height: '300px'}}></div> 
             <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>

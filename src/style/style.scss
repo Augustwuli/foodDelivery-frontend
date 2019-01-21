@@ -29,4 +29,9 @@ span.ant-input-group.store{
   .ant-btn-primary{
     margin-left: 60px;
   }
+  .toast{
+    position: absolute;
+    z-index: 2;
+    top: 50px;
+  }
 }

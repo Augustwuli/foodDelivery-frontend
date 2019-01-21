@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import '@/style/style.scss'
-import SiteIndex from '@/page/site/store'
 import Home from '@/coms/store/home'
 import Store from '@/coms/store/store'
 import Order from '@/coms/store/order'

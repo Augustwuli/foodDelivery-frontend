@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Menu, Icon, Layout, Input, Button} from 'antd'
+import {Menu, Icon, Layout} from 'antd'
 import 'antd/dist/antd.css'
 import { Link } from 'react-router-dom'
 
@@ -10,15 +10,15 @@ export default class Index extends Component {
     this.state = {}
   }
 
-  componentDidMount () {
-    // this.initMap()
+  click =( item, key, keyPath ) => {
+    console.log(item.key)
+    console.log(localStorage.getItem('storeId'))
   }
-
   render () {
     return (
       <Layout>
         <Sider style={{overflow: 'auto', height: '100vh', position: 'fixed', left: 0,}}>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} onClick={this.click}>
             <Menu.Item key="1">
               <Link to="/store/home">
                 <Icon type="home" />
