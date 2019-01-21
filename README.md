@@ -62,3 +62,15 @@
 - 配置路由
 - 配置菜单
 - 局部刷新的页面
+
+## 2019-01-21
+
+### 1.配置 API 接口文件
+
+博客链接：https://blog.csdn.net/August_leo/article/details/86569192
+
+内容包含：
+
+- 配置 tool/api.js 文件
+- 安装 superagent
+- 测试是否成功

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Form, Icon, Input, Button, Checkbox} from 'antd'
 import 'antd/dist/antd.css'
 import { Link } from 'react-router-dom'
+import Api from '@/tool/api.js'
 
 export default class Login extends Component {
   handleSubmit = (e) => {
@@ -11,6 +12,10 @@ export default class Login extends Component {
         console.log('Received values of form: ', values);
       }
     });
+  }
+
+  componentDidMount () {
+    
   }
 
   render () {
