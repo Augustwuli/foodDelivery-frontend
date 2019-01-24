@@ -30,9 +30,9 @@ export default class Login extends Component {
         toast: true,
         statu: r.statu
       },function(){
-        localStorage.setItem('storeId', r.data.userId)
         console.log('getdata'+this.state.message,this.state.toast,this.state.statu)
       })
+      sessionStorage.setItem('storeId', r.data.userId)
       setTimeout(()=>{
         this.setState({
           toast: false,

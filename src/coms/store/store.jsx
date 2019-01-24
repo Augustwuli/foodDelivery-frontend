@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import BasicLayout from '@/page/site/store';
-import { Input, Button } from 'antd'
+import { Input, Button, Form, Icon,} from 'antd'
 import Api from '@/tool/api.js'
+import { hidden } from 'ansi-colors';
+let storeId = 0;
+let longitude = '';
+let latitude = '';
 
 export default class Store extends Component {
   constructor (props) {
@@ -16,24 +20,31 @@ export default class Store extends Component {
     }
   }
 
-  componentDidMount () {
-    this.initMap()
-    console.log('商家信息' + localStorage.getItem('storeId'))
+  componentWillMount () {
+    storeId = sessionStorage.getItem('storeId');
     this.getData()
   }
 
+  componentDidMount () {
+    this.initMap()
+  }
+
+  componentWillUnmount () {
+    sessionStorage.setItem('storeId', storeId)
+  }
   getData () {
-    let storeId = localStorage.getItem('storeId')
+    let storeId = sessionStorage.getItem('storeId')
     Api.get(`stores/info/${storeId}`, null, r => {
       this.setState({
         name: r.data.name,
         phone: r.data.phone,
         longitude: r.data.longitude,
         latitude: r.data.latitude,
-        statu: r.statu
+        statu: r.statu,
+        address: r.data.address
       },function(){
-        localStorage.setItem('storeId',r.data.userId)
-        console.log('getdata'+this.state.name,this.state.phone,this.state.longitude,this.latitude)
+        sessionStorage.setItem('storeId',r.data.userId)
+        console.log('getdata'+this.state.name,this.state.phone,this.state.longitude,this.state.latitude, this.state.address)
       })
     })
   }
@@ -48,6 +59,9 @@ export default class Store extends Component {
       {
         "input" : "address",
         "location" : map
+    });
+    document.getElementById("address").addEventListener("focus", function(){
+      document.getElementById('container').style.display = 'block'
     });
     ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
       let str = "";
@@ -73,6 +87,11 @@ export default class Store extends Component {
         map.clearOverlays();    //清除地图上所有覆盖物
         function myFun(){
           var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+          /**
+           * 全局的经纬度
+           */
+          latitude = pp.lat;
+          longitude = pp.lng;
           map.centerAndZoom(pp, 18);
           map.addOverlay(new BMap.Marker(pp));    //添加标注
         }
@@ -80,30 +99,75 @@ export default class Store extends Component {
           onSearchComplete: myFun
         });
         local.search(myValue);
+        console.log(local);
       });
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        values.longitude = longitude;
+        values.latitude = latitude;
+        values.storeId = storeId;
+        console.log(values)
+        this.submit(values);
+      }
+    });
+  }
+
+  submit (params) {
+    console.log(params.longitude)
+    Api.post('stores/save', params, r => {
+      console.log(r)
+    })
+  }
+
   render () {
+    const { getFieldDecorator , setFieldsValue} = this.props.form;
     return (
       <BasicLayout>
-        <Input.Group className="store">
-            <div className="store-info">
-              <label>店铺名称</label>
-              <Input placeholder="请输入商家名称" style={{width: '240px'}} value={this.state.name}/>
-            </div>
-            <div className="store-info">
-              <label>联系电话</label>
-              <Input placeholder="请输入联系电话" style={{width: '240px'}} value={this.state.phone}/>
-            </div>
-            <div className="store-info">
-              <label>商家地址</label>
-              <Input id="address" placeholder="请输入商家地址" style={{width: '240px'}} value={this.state.address}/>
-            </div>
-            <div id="container" style={{width: '400px', height: '300px'}}></div> 
-            <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>
-          </Input.Group>
-          <Button style={{margin: '20px 0 20px 40px', width: '120px'}}>保存</Button>
+        <Form onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item 
+          label="店铺名称"
+        >
+          {getFieldDecorator('name', {
+            rules: [{ required: true, message: '请输入店铺名称！' }],
+            initialValue: this.state.name
+          })(
+            <Input style={{width: '240px'}}/>
+          )}
+        </Form.Item>
+        <Form.Item
+          label="联系电话"
+        >
+          {getFieldDecorator('phone', {
+            rules: [{ required: true, message: '请输入联系电话' }],
+            initialValue: this.state.phone
+          })(
+            <Input style={{width: '240px'}}/>
+          )}
+        </Form.Item>
+        <Form.Item
+          label="店铺地址"
+        >
+          {getFieldDecorator('address', {
+            rules: [{ required: true, message: '请输入店铺地址' }],
+            initialValue: this.state.address
+          })(
+            <Input id="address" style={{width: '240px'}}/>
+          )}
+        </Form.Item>
+        <div id="container" style={{width: '400px', height: '300px', marginLeft: '420px', display: 'none'}}></div> 
+        <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            保存
+          </Button>
+        </Form.Item>
+      </Form>
       </BasicLayout>
     )
   }
 }
+Store = Form.create()(Store);

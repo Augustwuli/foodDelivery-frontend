@@ -12,7 +12,7 @@ export default class Index extends Component {
 
   click =( item, key, keyPath ) => {
     console.log(item.key)
-    console.log(localStorage.getItem('storeId'))
+    console.log(sessionStorage.getItem('storeId'))
   }
   render () {
     return (
