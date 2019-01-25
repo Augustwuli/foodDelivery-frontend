@@ -1,9 +1,22 @@
 import React, { Component } from 'react'
-import BasicLayout from '@/page/site/store';
-import { Button, Input } from 'antd'
-import { Link } from 'react-router-dom'
+import BasicLayout from '@/page/site/store'
+import { Input, Button, Form,} from 'antd'
+let longitude = '';
+let latitude = '';
 
 export default class AddOrder extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      name: '',
+      phone: '',
+      address: '',
+      longitude: '',
+      latitude:'',
+      statu: 0
+    }
+  }
+
   componentDidMount () {
     this.initMap()
   }
@@ -18,6 +31,9 @@ export default class AddOrder extends Component {
       {
         "input" : "address",
         "location" : map
+    });
+    document.getElementById("address").addEventListener("focus", function(){
+      document.getElementById('container').style.display = 'block'
     });
     ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
       let str = "";
@@ -43,6 +59,11 @@ export default class AddOrder extends Component {
         map.clearOverlays();    //清除地图上所有覆盖物
         function myFun(){
           var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+          /**
+           * 全局的经纬度
+           */
+          latitude = pp.lat;
+          longitude = pp.lng;
           map.centerAndZoom(pp, 18);
           map.addOverlay(new BMap.Marker(pp));    //添加标注
         }
@@ -50,29 +71,54 @@ export default class AddOrder extends Component {
           onSearchComplete: myFun
         });
         local.search(myValue);
+        console.log(local);
       });
   }
   render () {
+    const { getFieldDecorator , setFieldsValue} = this.props.form;
     return (
       <BasicLayout>
-        <Input.Group className="store">
-            <div className="store-info">
-              <label>买家昵称</label>
-              <Input placeholder="请输入买家昵称" style={{width: '240px'}}/>
-            </div>
-            <div className="store-info">
-              <label>买家联系电话</label>
-              <Input placeholder="请输入买家联系电话" style={{width: '240px'}}/>
-            </div>
-            <div className="store-info">
-              <label>买家收货地址</label>
-              <Input id="address" placeholder="请输入买家收货地址" style={{width: '240px'}}/>
-            </div>
-            <div id="container" style={{width: '400px', height: '300px'}}></div> 
-            <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>
-          </Input.Group>
-          <Button style={{margin: '20px 0 20px 40px', width: '120px'}}>添加</Button>
+        <Form onSubmit={this.handleSubmit} className="login-form">
+          <Form.Item 
+            label="买家昵称"
+          >
+            {getFieldDecorator('name', {
+              rules: [{ required: true, message: '请输入店铺名称！' }],
+              initialValue: this.state.name
+            })(
+              <Input style={{width: '240px'}}/>
+            )}
+          </Form.Item>
+          <Form.Item
+            label="买家联系电话"
+          >
+            {getFieldDecorator('phone', {
+              rules: [{ required: true, message: '请输入联系电话' }],
+              initialValue: this.state.phone
+            })(
+              <Input style={{width: '240px'}}/>
+            )}
+          </Form.Item>
+          <Form.Item
+            label="买家收货地址"
+          >
+            {getFieldDecorator('address', {
+              rules: [{ required: true, message: '请输入店铺地址' }],
+              initialValue: this.state.address
+            })(
+              <Input id="address" style={{width: '240px'}}/>
+            )}
+          </Form.Item>
+          <div id="container" style={{width: '400px', height: '300px', marginLeft: '420px', display: 'none'}}></div> 
+          <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              添加
+            </Button>
+          </Form.Item>
+        </Form>
       </BasicLayout>
     )
   }
 }
+AddOrder = Form.create()(AddOrder);

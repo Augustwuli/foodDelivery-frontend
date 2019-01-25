@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import BasicLayout from '@/page/site/store';
-import { Input, Button, Form, Icon,} from 'antd'
+import { Input, Button, Form,} from 'antd'
 import Api from '@/tool/api.js'
-import { hidden } from 'ansi-colors';
 let storeId = 0;
 let longitude = '';
 let latitude = '';
@@ -107,8 +106,8 @@ export default class Store extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        values.longitude = longitude;
-        values.latitude = latitude;
+        values.longitude = longitude.toString();
+        values.latitude = latitude.toString();
         values.storeId = storeId;
         console.log(values)
         this.submit(values);
@@ -117,7 +116,6 @@ export default class Store extends Component {
   }
 
   submit (params) {
-    console.log(params.longitude)
     Api.post('stores/save', params, r => {
       console.log(r)
     })
