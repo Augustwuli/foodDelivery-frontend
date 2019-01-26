@@ -32,7 +32,6 @@ export default class Login extends Component {
       },function(){
         console.log('getdata'+this.state.message,this.state.toast,this.state.statu)
       })
-      sessionStorage.setItem('storeId', r.data.userId)
       setTimeout(()=>{
         this.setState({
           toast: false,
@@ -40,8 +39,12 @@ export default class Login extends Component {
           console.log('getdata'+this.state.toast)
         })
         if(r.statu === 1) {
+          sessionStorage.setItem('storeId', r.data.userId)
           if(params.type === '1'){
             this.props.history.push("/store/home");
+          }else if(params.type === '2'){
+            sessionStorage.setItem('takerId', r.data.userId)
+            this.props.history.push("/taker/home");
           }
         }
       },1000);

@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import BasicLayout from '@/page/site/store';
+import BasicLayout from '@/page/site/store'
 import { Input, Button, Form,} from 'antd'
 import Api from '@/tool/api.js'
-let storeId = 0;
 let longitude = '';
 let latitude = '';
 
-export default class Store extends Component {
+export default class AddOrder extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      orderId: props.location.state.id,
       name: '',
       phone: '',
       address: '',
@@ -19,33 +19,9 @@ export default class Store extends Component {
     }
   }
 
-  componentWillMount () {
-    storeId = sessionStorage.getItem('storeId');
-    this.getData()
-  }
-
   componentDidMount () {
     this.initMap()
-  }
-
-  componentWillUnmount () {
-    sessionStorage.setItem('storeId', storeId)
-  }
-  getData () {
-    let storeId = sessionStorage.getItem('storeId')
-    Api.get(`stores/info/${storeId}`, null, r => {
-      this.setState({
-        name: r.data.name,
-        phone: r.data.phone,
-        longitude: r.data.longitude,
-        latitude: r.data.latitude,
-        statu: r.statu,
-        address: r.data.address
-      },function(){
-        sessionStorage.setItem('storeId',r.data.userId)
-        console.log('getdata'+this.state.name,this.state.phone,this.state.longitude,this.state.latitude, this.state.address)
-      })
-    })
+    this.getData()
   }
 
   initMap () {
@@ -108,16 +84,34 @@ export default class Store extends Component {
       if (!err) {
         values.longitude = longitude.toString();
         values.latitude = latitude.toString();
-        values.storeId = storeId;
-        console.log(values)
+        values.orderId = this.state.id;
         this.submit(values);
       }
     });
   }
 
   submit (params) {
-    Api.post('stores/save', params, r => {
-      console.log(r)
+    console.log(params);
+    Api.post('orders/update', params, r => {
+      if(r.statu === 1) {
+        this.props.history.push("/store/home");
+      }
+    })
+  }
+
+  getData () {
+    let orderId = this.state.orderId;
+    Api.get(`orders/info/${orderId}`, null, r => {
+      this.setState({
+        name: r.data.name,
+        phone: r.data.phone,
+        longitude: r.data.longitude,
+        latitude: r.data.latitude,
+        statu: r.statu,
+        address: r.data.address
+      },function(){
+        console.log('getdata'+this.state.name,this.state.phone,this.state.longitude,this.state.latitude, this.state.address)
+      })
     })
   }
 
@@ -126,46 +120,46 @@ export default class Store extends Component {
     return (
       <BasicLayout>
         <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item 
-          label="店铺名称"
-        >
-          {getFieldDecorator('name', {
-            rules: [{ required: true, message: '请输入店铺名称！' }],
-            initialValue: this.state.name
-          })(
-            <Input style={{width: '240px'}}/>
-          )}
-        </Form.Item>
-        <Form.Item
-          label="联系电话"
-        >
-          {getFieldDecorator('phone', {
-            rules: [{ required: true, message: '请输入联系电话' }],
-            initialValue: this.state.phone
-          })(
-            <Input style={{width: '240px'}}/>
-          )}
-        </Form.Item>
-        <Form.Item
-          label="店铺地址"
-        >
-          {getFieldDecorator('address', {
-            rules: [{ required: true, message: '请输入店铺地址' }],
-            initialValue: this.state.address
-          })(
-            <Input id="address" style={{width: '240px'}}/>
-          )}
-        </Form.Item>
-        <div id="container" style={{width: '400px', height: '300px', marginLeft: '420px', display: 'none'}}></div> 
-        <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            保存
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item 
+            label="买家昵称"
+          >
+            {getFieldDecorator('name', {
+              rules: [{ required: true, message: '请输入店铺名称！' }],
+              initialValue: this.state.name
+            })(
+              <Input style={{width: '240px'}}/>
+            )}
+          </Form.Item>
+          <Form.Item
+            label="买家联系电话"
+          >
+            {getFieldDecorator('phone', {
+              rules: [{ required: true, message: '请输入联系电话' }],
+              initialValue: this.state.phone
+            })(
+              <Input style={{width: '240px'}}/>
+            )}
+          </Form.Item>
+          <Form.Item
+            label="买家收货地址"
+          >
+            {getFieldDecorator('address', {
+              rules: [{ required: true, message: '请输入店铺地址' }],
+              initialValue: this.state.address
+            })(
+              <Input id="address" style={{width: '240px'}}/>
+            )}
+          </Form.Item>
+          <div id="container" style={{width: '400px', height: '300px', marginLeft: '420px', display: 'none'}}></div> 
+          <div id="searchResultPanel" style={{border: '1px solid #C0C0C0', width: '150px', height: 'auto', display: 'none'}}></div>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              修改
+            </Button>
+          </Form.Item>
+        </Form>
       </BasicLayout>
     )
   }
 }
-Store = Form.create()(Store);
+AddOrder = Form.create()(AddOrder);

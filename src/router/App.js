@@ -5,7 +5,12 @@ import Home from '@/coms/store/home'
 import Store from '@/coms/store/store'
 import Order from '@/coms/store/order'
 import AddOrder from '@/coms/store/addOrder'
+import EditOrder from '@/coms/store/editOrder'
 import Login from '@/page/site/login'
+import Thome from '@/coms/taker/home'
+import Taker from '@/coms/taker/taker'
+import Torder from '@/coms/taker/order'
+import Detail from '@/coms/taker/detail'
 
 export default class App extends Component {
   render () {
@@ -17,6 +22,11 @@ export default class App extends Component {
           <Route path='/store/store' component={Store} />
           <Route path='/store/order' component={Order} />
           <Route path='/store/addorder' component={AddOrder} />
+          <Route path='/store/editorder' component={EditOrder} />
+          <Route path='/taker/home' component={Thome} />
+          <Route path='/taker/taker' component={Taker} />
+          <Route path='/taker/order' component={Torder} />
+          <Route path='/taker/detail' component={Detail}/>
         </Switch>
       </Router>
     )

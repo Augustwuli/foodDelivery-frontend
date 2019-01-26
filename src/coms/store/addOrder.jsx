@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import BasicLayout from '@/page/site/store'
 import { Input, Button, Form,} from 'antd'
+import Api from '@/tool/api.js'
 let longitude = '';
 let latitude = '';
 
@@ -74,8 +75,29 @@ export default class AddOrder extends Component {
         console.log(local);
       });
   }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        values.longitude = longitude.toString();
+        values.latitude = latitude.toString();
+        values.storeId = sessionStorage.getItem('storeId')
+        this.submit(values);
+      }
+    });
+  }
+
+  submit (params) {
+    Api.post('orders/add', params, r => {
+      if(r.statu === 1) {
+        this.props.history.push("/store/home");
+      }
+    })
+  }
+
   render () {
-    const { getFieldDecorator , setFieldsValue} = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     return (
       <BasicLayout>
         <Form onSubmit={this.handleSubmit} className="login-form">
