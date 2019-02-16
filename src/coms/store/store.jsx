@@ -75,8 +75,8 @@ export default class Store extends Component {
         _value = e.toitem.value;
         value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
       }    
-      str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
-      document.getElementById("searchResultPanel").innerHTML = str;
+      // str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+      // document.getElementById("searchResultPanel").innerHTML = str;
     });
     let myValue;
     ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
